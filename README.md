@@ -1,2 +1,2 @@
 # CRX-Downloader
-CRX Downloader Chrome Adoon
+CRX Downloader Chrome Addon
