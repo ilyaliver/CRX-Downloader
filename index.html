@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ru">
+   <head>
+      <title>Скачивание CRX расширений Chrome</title>
+      <meta charset="utf-8">
+      <meta http-equiv="x-ua-compatible" content="IE=edge">
+      <meta name="google-site-verification" content="6MQ3V3iNTp9Gaek0rQdI1BT1b5HKKsN8_WzyFbu1uWU">
+      <meta name="description" content="Скачивайте CRX-файлы расширений Chrome по ссылке из каталога или ID расширения.">
+      <meta name="referrer" content="origin">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="icon" type="image/ico" href="https://www.google.com/images/icons/product/chrome_web_store-32.png">
+      <link rel="icon" href="https://ssl.gstatic.com/chrome/webstore/images/icon_48px.png" sizes="48x48">
+      <link rel="icon" href="https://ssl.gstatic.com/chrome/webstore/images/icon_96px.png" sizes="96x96">
+      <link rel="icon" href="https://ssl.gstatic.com/chrome/webstore/images/icon_144px.png" sizes="144x144">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="css/style.css">
+      <script>
+      function ge(el) { return (typeof el == 'string' || typeof el == 'number') ? document.getElementById(el) : el; }
+      function hide(id){ setTimeout(function(){ ge(id).style.display='none'; },200); ge(id).setAttribute('hidden','1'); }
+      function show(id){ ge(id).style.display=''; setTimeout(function(){ ge(id).removeAttribute('hidden'); },2); }
+      var crx_check_to = 0;
+      function crx_keydown(event){
+         if (event.key !== 'Enter') return;
+         event.preventDefault();
+         crx_check();
+         setTimeout(function(){
+            var download = ge('crx_download');
+            if (!download.hasAttribute('hidden')) download.click();
+         },350);
+      }
+      function crx_check(){
+         clearTimeout(crx_check_to);
+         crx_check_to = setTimeout(function(){
+            var val = ge('ext_src_link').value;
+            var ext_id = (val.match(/[a-p]{32}/i)||[])[0];
+            var ext_name = (val.match(/detail\/([^\/]+)\/[a-p]{32}/i)||[])[1] || '';
+            if (ext_name) ext_name += '_';
+            if (!ext_id){
+               hide('crx_download');
+               return;
+            }
+            show('crx_download');
+            ge('crx_download').setAttribute('download', ext_name + ext_id + '.crx');
+            ge('crx_download').href = 'https://clients2.google.com/service/update2/crx?response=redirect&acceptformat=crx2,crx3&os=win&arch=x86&nacl_arch=x86-32&prod=chromiumcrx&prodchannel=stable&prodversion=139.0.0.0&lang=ru&x=id%3D'+ext_id+'%26v%3D0.0.0.1%26uc';
+         },300);
+      }
+      </script>
+   </head>
+   <body>
+      <header class="top-nav">
+         <a class="brand" href="./" aria-label="CRX Downloader">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span>CRX Downloader</span>
+         </a>
+         <nav class="nav-links" aria-label="Основная навигация">
+            <a href="#download">Скачать</a>
+            <a href="#how-it-works">Как работает</a>
+            <a href="#details">Детали</a>
+         </nav>
+      </header>
+
+      <main>
+         <section class="hero-band" id="download">
+            <div class="container hero-grid">
+               <div class="hero-copy">
+                  <span class="badge-coral">CRX utility</span>
+                  <h1>Скачивайте CRX-файлы расширений Chrome без лишних шагов</h1>
+                  <p class="hero-lead">Вставьте ссылку из интернет-магазина Chrome или ID расширения. Сервис подготовит прямую ссылку для сохранения файла на компьютер или флешку.</p>
+                  <div class="trust-row" aria-label="Преимущества">
+                     <span>Локальная обработка</span>
+                     <span>Официальный URL Chrome</span>
+                     <span>Без регистрации</span>
+                  </div>
+                  <div class="download-card" role="search">
+                     <label for="ext_src_link">Вставьте ссылку на расширение или его ID и нажмите Enter</label>
+                     <div class="input-row">
+                        <div class="input-shell">
+                           <span class="input-icon" aria-hidden="true"></span>
+                           <input type="text" id="ext_src_link" oninput="crx_check()" onkeyup="crx_check()" onchange="crx_check()" onpaste="crx_check()" onkeydown="crx_keydown(event)" placeholder="Например: detail/name/abcdefghijklmnopabcdefghijklmnop" aria-label="Вставьте ссылку на расширение или его ID и нажмите Enter">
+                        </div>
+                        <a id="crx_download" class="button-primary" style="display:none;" role="button" aria-label="Скачать" tabindex="0" hidden><span>Скачать CRX</span><span class="download-arrow" aria-hidden="true"></span></a>
+                     </div>
+                     <p class="form-hint">Если кнопка появилась, нажмите ее или выберите «Сохранить ссылку как...».</p>
+                  </div>
+               </div>
+
+               <div class="product-mockup-card-dark" aria-label="Пример подготовки CRX файла">
+                  <div class="mockup-header">
+                     <span></span>
+                     <span></span>
+                     <span></span>
+                  </div>
+                  <div class="mockup-status">
+                     <span class="status-dot"></span>
+                     <span>ready to resolve crx</span>
+                  </div>
+                  <div class="terminal-line"><span class="muted">input</span> chrome.google.com/webstore/detail/...</div>
+                  <div class="terminal-line"><span class="teal">id</span> abcdefghijklmnopabcdefghijklmnop</div>
+                  <div class="terminal-line"><span class="amber">file</span> extension_abcdefghijklmnop.crx</div>
+                  <div class="terminal-line"><span class="muted">format</span> crx2, crx3</div>
+                  <div class="mockup-panel">
+                     <img src="img/downloading.png" alt="Иллюстрация скачивания расширения">
+                  </div>
+               </div>
+            </div>
+         </section>
+
+         <section class="feature-section" id="how-it-works">
+            <div class="container">
+               <div class="section-heading">
+                  <span class="badge-pill">Процесс</span>
+                  <h2>Три коротких шага</h2>
+               </div>
+               <div class="feature-grid">
+                  <article class="feature-card">
+                     <span class="feature-icon copy-icon" aria-hidden="true"></span>
+                     <span class="step-number">01</span>
+                     <h3>Скопируйте ссылку</h3>
+                     <p>Откройте страницу расширения в каталоге Chrome и скопируйте URL из адресной строки.</p>
+                  </article>
+                  <article class="feature-card">
+                     <span class="feature-icon paste-icon" aria-hidden="true"></span>
+                     <span class="step-number">02</span>
+                     <h3>Вставьте в поле</h3>
+                     <p>Можно вставить всю ссылку или только 32-символьный ID расширения.</p>
+                  </article>
+                  <article class="feature-card">
+                     <span class="feature-icon save-icon" aria-hidden="true"></span>
+                     <span class="step-number">03</span>
+                     <h3>Сохраните CRX</h3>
+                     <p>После проверки появится кнопка скачивания с готовым именем файла.</p>
+                  </article>
+               </div>
+            </div>
+         </section>
+
+         <section class="details-section" id="details">
+            <div class="container details-grid">
+               <div>
+                  <span class="badge-pill">Зачем это нужно</span>
+                  <h2>Файл под рукой, даже когда каталог недоступен</h2>
+               </div>
+               <div class="details-card">
+                  <p>CRX-файл удобно сохранить локально, чтобы перенести расширение на другой компьютер, подготовить резервную копию или установить его там, где доступ к каталогу расширений заблокирован.</p>
+                  <p>Сервис не хранит введенные ссылки: он только извлекает ID расширения в браузере и формирует официальный URL загрузки Chrome.</p>
+                  <div class="info-strip">
+                     <span>JS only</span>
+                     <span>CRX3 ready</span>
+                     <span>Chrome service</span>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </main>
+
+      <footer class="footer">
+         <div class="container footer-grid">
+            <div>
+               <div class="footer-brand"><span class="brand-mark" aria-hidden="true"></span>CRX Downloader</div>
+               <p>Минималистичный инструмент для скачивания расширений Chrome в формате CRX.</p>
+            </div>
+            <a href="#download" class="button-secondary-on-dark">Подготовить файл</a>
+         </div>
+      </footer>
+   </body>
+</html>
